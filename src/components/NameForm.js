@@ -12,10 +12,23 @@ export class NameForm extends React.Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleRemove = this.handleRemove.bind(this);
   }
 
   handleChange(event) {
     this.setState({value: event.target.value});
+  }
+
+  handleRemove(id) {
+
+    for (let i = this.state.items.length - 1; i >= 0; --i) {
+        if (this.state.items[i].id == id) {
+            this.state.items.splice(i,1);
+        }
+    }
+
+    localStorage.setItem("toDoItems", JSON.stringify(this.state.items));
+    this.setState({items: this.state.items});
   }
 
   componentDidMount() {
@@ -54,7 +67,7 @@ export class NameForm extends React.Component {
             <ul id="myUL" key={item.id}>
               <li>
                 {item.title}
-                <span className="close">×</span>
+                <span onClick={this.handleRemove.bind(null, item.id)} key={item.id} className="close">×</span>
               </li>
             </ul>
           )}
